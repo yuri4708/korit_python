@@ -1,5 +1,5 @@
 import random
-import  time
+import time
 
 def basic_atk(player):
     if random.randint(1, 100) <= player.cri_luk:
@@ -49,7 +49,7 @@ def player_turn(player):
 
 def battle(player, monster):
     print(f"{player.nickmane} vs {monster.name}")
-    while player.hp >0 and monster.hp > 0:
+    while player.hp > 0 and monster.hp > 0:
         print("\n==========================================================")
         print(f"{player.nickmane} [HP: {player.hp}, MP: {player.mp}]")
         print(f"{monster.name} [HP: {monster.hp}]")
@@ -64,12 +64,20 @@ def battle(player, monster):
         if monster.hp <= 0:
             print(f"{monster.name}을/를 처치했습니다.")
             #배틀 보상
+            exp_reward_multiple = random.uniform(0.9, 1.1)
+            gold_reward_multiple = random.uniform(0.9, 1.1)
+            exp_reward = int(monster.exp_reward * exp_reward_multiple)
+            gold_reward = int(monster.gold_reward * gold_reward_multiple)
+            print(f"\n경험치 - {exp_reward}, 골드 - {gold_reward} 획득\n")
+            player.gain_exp(exp_reward)
+            player.glod += gold_reward
 
             #몬스터의 데이터와 플레이어의 데이터 초기화
             monster.hp = monster.max_hp
             player.hp = player.max_hp
             player.mp = player.max.mp
             break
+
         #몬스터 턴
         player.hp -= monster.attack
         print(f"{monster.name}의 반격! {monster.attack} 데미지!")
@@ -80,6 +88,9 @@ def battle(player, monster):
         if player.hp <= 0:
             print("패배했습니다. 게임 오버!")
             #플레이가 소지하고 있던 아이템을 초기화
+            player.hp = player.max_hp
+            player.mp = player.max_mp
+
             break
 
 
